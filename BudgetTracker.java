@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class Expense {
+class Transaction {
     String description;
     double amount;
 
-    Expense(String description, double amount) {
+    Transaction(String description, double amount) {
         this.description = description;
         this.amount = amount;
     }
@@ -18,19 +18,19 @@ class Expense {
 }
 
 class BudgetTracker {
-    private List<Expense> expenses;
+    private List<Transaction> transactions;
 
     BudgetTracker() {
-        expenses = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
-    void addExpense(String description, double amount) {
-        expenses.add(new Expense(description, amount));
+    void addTransaction(String description, double amount) {
+        transactions.add(new Transaction(description, amount));
     }
 
-    void viewExpenses() {
-        for (Expense expense : expenses) {
-            System.out.println(expense);
+    void viewTransactions() {
+        for (Transaction transaction : transactions) {
+            System.out.println(transaction);
         }
     }
 
@@ -40,21 +40,29 @@ class BudgetTracker {
 
         while (true) {
             System.out.println("\n1. Add Expense");
-            System.out.println("2. View Expenses");
-            System.out.println("3. Exit");
+            System.out.println("2. Add Income");
+            System.out.println("3. View Transactions");
+            System.out.println("4. Exit");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             if (choice == 1) {
-                System.out.print("Enter description: ");
+                System.out.print("Enter expense description: ");
                 String description = scanner.nextLine();
-                System.out.print("Enter amount: ");
+                System.out.print("Enter expense amount: ");
                 double amount = scanner.nextDouble();
-                tracker.addExpense(description, amount);
+                tracker.addTransaction(description, -amount);
                 System.out.println("Expense added.");
             } else if (choice == 2) {
-                tracker.viewExpenses();
+                System.out.print("Enter income description: ");
+                String description = scanner.nextLine();
+                System.out.print("Enter income amount: ");
+                double amount = scanner.nextDouble();
+                tracker.addTransaction(description, amount);
+                System.out.println("Income added.");
             } else if (choice == 3) {
+                tracker.viewTransactions();
+            } else if (choice == 4) {
                 break;
             } else {
                 System.out.println("Invalid choice, please try again.");
