@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -78,46 +79,66 @@ class BudgetTracker {
             System.out.println("4. View Balance");
             System.out.println("5. View Monthly Report");
             System.out.println("6. Exit");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            int choice = 0;
+
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input, please enter a number.");
+                continue;
+            }
 
             if (choice == 1) {
-                System.out.print("Enter expense description: ");
-                String description = scanner.nextLine();
-                System.out.print("Enter expense amount: ");
-                double amount = scanner.nextDouble();
-                scanner.nextLine(); // Consume newline
-                System.out.print("Enter expense category: ");
-                String category = scanner.nextLine();
-                System.out.print("Enter date (yyyy-mm-dd): ");
-                String dateString = scanner.nextLine();
-                LocalDate date = LocalDate.parse(dateString);
-                tracker.addTransaction(description, -amount, category, date);
-                System.out.println("Expense added.");
+                try {
+                    System.out.print("Enter expense description: ");
+                    String description = scanner.nextLine();
+                    System.out.print("Enter expense amount: ");
+                    double amount = Double.parseDouble(scanner.nextLine());
+                    System.out.print("Enter expense category: ");
+                    String category = scanner.nextLine();
+                    System.out.print("Enter date (yyyy-mm-dd): ");
+                    String dateString = scanner.nextLine();
+                    LocalDate date = LocalDate.parse(dateString);
+                    tracker.addTransaction(description, -amount, category, date);
+                    System.out.println("Expense added.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid date format. Please use yyyy-mm-dd.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid amount. Please enter a numeric value.");
+                }
             } else if (choice == 2) {
-                System.out.print("Enter income description: ");
-                String description = scanner.nextLine();
-                System.out.print("Enter income amount: ");
-                double amount = scanner.nextDouble();
-                scanner.nextLine(); // Consume newline
-                System.out.print("Enter income category: ");
-                String category = scanner.nextLine();
-                System.out.print("Enter date (yyyy-mm-dd): ");
-                String dateString = scanner.nextLine();
-                LocalDate date = LocalDate.parse(dateString);
-                tracker.addTransaction(description, amount, category, date);
-                System.out.println("Income added.");
+                try {
+                    System.out.print("Enter income description: ");
+                    String description = scanner.nextLine();
+                    System.out.print("Enter income amount: ");
+                    double amount = Double.parseDouble(scanner.nextLine());
+                    System.out.print("Enter income category: ");
+                    String category = scanner.nextLine();
+                    System.out.print("Enter date (yyyy-mm-dd): ");
+                    String dateString = scanner.nextLine();
+                    LocalDate date = LocalDate.parse(dateString);
+                    tracker.addTransaction(description, amount, category, date);
+                    System.out.println("Income added.");
+                } catch (DateTimeParseException e) {
+                    System.out.println("Invalid date format. Please use yyyy-mm-dd.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid amount. Please enter a numeric value.");
+                }
             } else if (choice == 3) {
                 tracker.viewTransactions();
             } else if (choice == 4) {
                 double balance = tracker.calculateBalance();
                 System.out.println("Current balance: $" + balance);
             } else if (choice == 5) {
-                System.out.print("Enter year: ");
-                int year = scanner.nextInt();
-                System.out.print("Enter month: ");
-                int month = scanner.nextInt();
-                tracker.viewMonthlyReport(year, month);
+                try {
+                    System.out.print("Enter year: ");
+                    int year = Integer.parseInt(scanner.nextLine());
+                    System.out.print("Enter month: ");
+                    int month = Integer.parseInt(scanner.nextLine());
+                    tracker.viewMonthlyReport(year, month);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter numeric values for year and month.");
+                }
             } else if (choice == 6) {
                 break;
             } else {
