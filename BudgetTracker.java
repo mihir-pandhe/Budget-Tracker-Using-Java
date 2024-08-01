@@ -5,15 +5,17 @@ import java.util.Scanner;
 class Transaction {
     String description;
     double amount;
+    String category;
 
-    Transaction(String description, double amount) {
+    Transaction(String description, double amount, String category) {
         this.description = description;
         this.amount = amount;
+        this.category = category;
     }
 
     @Override
     public String toString() {
-        return description + ": $" + amount;
+        return category + " - " + description + ": $" + amount;
     }
 }
 
@@ -24,8 +26,8 @@ class BudgetTracker {
         transactions = new ArrayList<>();
     }
 
-    void addTransaction(String description, double amount) {
-        transactions.add(new Transaction(description, amount));
+    void addTransaction(String description, double amount, String category) {
+        transactions.add(new Transaction(description, amount, category));
     }
 
     void viewTransactions() {
@@ -60,14 +62,20 @@ class BudgetTracker {
                 String description = scanner.nextLine();
                 System.out.print("Enter expense amount: ");
                 double amount = scanner.nextDouble();
-                tracker.addTransaction(description, -amount);
+                scanner.nextLine();
+                System.out.print("Enter expense category: ");
+                String category = scanner.nextLine();
+                tracker.addTransaction(description, -amount, category);
                 System.out.println("Expense added.");
             } else if (choice == 2) {
                 System.out.print("Enter income description: ");
                 String description = scanner.nextLine();
                 System.out.print("Enter income amount: ");
                 double amount = scanner.nextDouble();
-                tracker.addTransaction(description, amount);
+                scanner.nextLine();
+                System.out.print("Enter income category: ");
+                String category = scanner.nextLine();
+                tracker.addTransaction(description, amount, category);
                 System.out.println("Income added.");
             } else if (choice == 3) {
                 tracker.viewTransactions();
