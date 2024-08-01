@@ -34,6 +34,14 @@ class BudgetTracker {
         }
     }
 
+    double calculateBalance() {
+        double balance = 0;
+        for (Transaction transaction : transactions) {
+            balance += transaction.amount;
+        }
+        return balance;
+    }
+
     public static void main(String[] args) {
         BudgetTracker tracker = new BudgetTracker();
         Scanner scanner = new Scanner(System.in);
@@ -42,7 +50,8 @@ class BudgetTracker {
             System.out.println("\n1. Add Expense");
             System.out.println("2. Add Income");
             System.out.println("3. View Transactions");
-            System.out.println("4. Exit");
+            System.out.println("4. View Balance");
+            System.out.println("5. Exit");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -63,6 +72,9 @@ class BudgetTracker {
             } else if (choice == 3) {
                 tracker.viewTransactions();
             } else if (choice == 4) {
+                double balance = tracker.calculateBalance();
+                System.out.println("Current balance: $" + balance);
+            } else if (choice == 5) {
                 break;
             } else {
                 System.out.println("Invalid choice, please try again.");
