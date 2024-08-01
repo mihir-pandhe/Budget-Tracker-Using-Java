@@ -1,3 +1,4 @@
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -27,13 +28,16 @@ class Transaction {
 
 class BudgetTracker {
     private List<Transaction> transactions;
+    private static final String FILE_NAME = "transactions.txt";
 
     BudgetTracker() {
         transactions = new ArrayList<>();
+        loadTransactions();
     }
 
     void addTransaction(String description, double amount, String category, LocalDate date) {
         transactions.add(new Transaction(description, amount, category, date));
+        saveTransactions();
     }
 
     void viewTransactions() {
@@ -66,6 +70,34 @@ class BudgetTracker {
         System.out.println("Total Income: $" + income);
         System.out.println("Total Expenses: $" + expenses);
         System.out.println("Net Balance: $" + (income + expenses));
+    }
+
+    private void saveTransactions() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (Transaction transaction : transactions) {
+                writer.write(transaction.description + "," + transaction.amount + "," + transaction.category + ","
+                        + transaction.date);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving transactions: " + e.getMessage());
+        }
+    }
+
+    private void loadTransactions() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                String description = parts[0];
+                double amount = Double.parseDouble(parts[1]);
+                String category = parts[2];
+                LocalDate date = LocalDate.parse(parts[3]);
+                transactions.add(new Transaction(description, amount, category, date));
+            }
+        } catch (IOException | DateTimeParseException e) {
+            System.out.println("Error loading transactions: " + e.getMessage());
+        }
     }
 
     public static void main(String[] args) {
