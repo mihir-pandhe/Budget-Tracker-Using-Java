@@ -41,8 +41,13 @@ class BudgetTracker {
     }
 
     void viewTransactions() {
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+        System.out.println("\nAll Transactions:");
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions available.");
+        } else {
+            for (Transaction transaction : transactions) {
+                System.out.println(transaction);
+            }
         }
     }
 
@@ -105,12 +110,14 @@ class BudgetTracker {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n1. Add Expense");
+            System.out.println("\nBudget Tracker Menu:");
+            System.out.println("1. Add Expense");
             System.out.println("2. Add Income");
             System.out.println("3. View Transactions");
             System.out.println("4. View Balance");
             System.out.println("5. View Monthly Report");
             System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
             int choice = 0;
 
             try {
